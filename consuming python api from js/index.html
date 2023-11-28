@@ -1,0 +1,53 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Fruits API</title>
+</head>
+<body>
+    <h1>Fruits</h1>
+    <select id="lst">
+    </select>
+    <label for="txt">Name</label><input type="text" id="txt"><button id="btn">Add</button>
+    <script>
+        fetch('http://localhost:8882/list')
+        .then(Response=>Response.json())
+        .then(data=>{
+            console.log(data);
+            let lst=document.getElementById('lst');
+            let txt=document.getElementById('txt');
+            let btn=document.getElementById('btn');
+            data.forEach(element => {
+                let opt=document.createElement('option');
+                opt.textContent=element;
+                lst.appendChild(opt);
+            });
+        })
+        .catch(err=>console.log(err));
+        btn.addEventListener('click', function () {
+                let newItem = txt.value.trim();
+                if (newItem !== "") {
+                    fetch('http://localhost:8882/list', {
+                        method: 'POST',
+                        headers: {
+                            'Content-Type': 'application/x-www-form-urlencoded',
+                        },
+                        body: 'item=' + encodeURIComponent(newItem),
+                    })
+                    .then(response => response.json())
+                    .then(result => console.log(result))
+                    .catch(err => console.log(err));
+                }
+            });
+            
+        
+        
+        
+        
+
+        
+    </script>
+
+</body>
+</html>
